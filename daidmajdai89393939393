@@ -504,7 +504,6 @@ function OrionLib:Init()
 	end	
 end
 
-、
 -- 元のファイルの function OrionLib:MakeWindow 以降のコードを
 -- そのままコピーして貼り付けてください
 
