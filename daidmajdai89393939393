@@ -25,12 +25,12 @@ local OrionLib = {
 		},
 
 		Bliz_T = {
-			Main = Color3.fromRGB(0, 0, 0), -- Preto para o fundo
-			Second = Color3.fromRGB(20, 20, 20), -- Cinza bem escuro para contraste
-			Stroke = Color3.fromRGB(100, 150, 255), -- Azul bebê claro para detalhes
-			Divider = Color3.fromRGB(80, 120, 200), -- Azul bebê mais escuro para divisores
-			Text = Color3.fromRGB(180, 220, 255), -- Azul bebê claro para textos
-			TextDark = Color3.fromRGB(150, 180, 230) -- Azul bebê amarelado para texto secundário
+			Main = Color3.fromRGB(0, 0, 0),
+			Second = Color3.fromRGB(20, 20, 20),
+			Stroke = Color3.fromRGB(100, 150, 255),
+			Divider = Color3.fromRGB(80, 120, 200),
+			Text = Color3.fromRGB(180, 220, 255),
+			TextDark = Color3.fromRGB(150, 180, 230)
 		}
 	},
 	SelectedTheme = "Bliz_T",
@@ -38,7 +38,6 @@ local OrionLib = {
 	SaveCfg = false
 }
 
---Feather Icons https://github.com/evoincorp/lucideblox/tree/master/src/modules/util - Created by 7kayoh
 local Icons = {}
 
 local Success, Response = pcall(function()
@@ -97,7 +96,6 @@ function OrionLib:IsRunning()
 	else
 		return Orion.Parent == game:GetService("CoreGui")
 	end
-
 end
 
 local function AddConnection(Signal, Function)
@@ -143,7 +141,6 @@ local function MakeDraggable(DragPoint, Main)
 		AddConnection(UserInputService.InputChanged, function(Input)
 			if Input == DragInput and Dragging then
 				local Delta = Input.Position - MousePos
-				--TweenService:Create(Main, TweenInfo.new(0.05, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Position  = UDim2.new(FramePos.X.Scale,FramePos.X.Offset + Delta.X, FramePos.Y.Scale, FramePos.Y.Offset + Delta.Y)}):Play()
 				Main.Position  = UDim2.new(FramePos.X.Scale,FramePos.X.Offset + Delta.X, FramePos.Y.Scale, FramePos.Y.Offset + Delta.Y)
 			end
 		end)
@@ -160,8 +157,6 @@ local function Create(Name, Properties, Children)
 	end
 	return Object
 end
-
-
 
 local function CreateElement(ElementName, ElementFunction)
 	OrionLib.Elements[ElementName] = function(...)
@@ -187,7 +182,6 @@ local function SetChildren(Element, Children)
 	end)
 	return Element
 end
-
 
 local function Round(Number, Factor)
 	local Result = math.floor(Number/Factor + (math.sign(Number) * 0.5)) * Factor
@@ -302,9 +296,10 @@ local function CheckKey(Table, Key)
 	end
 end
 
+-- 角の丸さ: 15に変更（デフォルトは10）
 CreateElement("Corner", function(Scale, Offset)
 	local Corner = Create("UICorner", {
-		CornerRadius = UDim.new(Scale or 0, Offset or 100)
+		CornerRadius = UDim.new(Scale or 0, Offset or 15)
 	})
 	return Corner
 end)
@@ -426,6 +421,7 @@ CreateElement("Label", function(Text, TextSize, Transparency)
 	return Label
 end)
 
+-- 通知の幅: 350に変更（デフォルトは300）
 local NotificationHolder = SetProps(SetChildren(MakeElement("TFrame"), {
 	SetProps(MakeElement("List"), {
 		HorizontalAlignment = Enum.HorizontalAlignment.Center,
@@ -435,7 +431,7 @@ local NotificationHolder = SetProps(SetChildren(MakeElement("TFrame"), {
 	})
 }), {
 	Position = UDim2.new(1, -25, 1, -25),
-	Size = UDim2.new(0, 300, 1, -25),
+	Size = UDim2.new(0, 350, 1, -25),
 	AnchorPoint = Vector2.new(1, 1),
 	Parent = Orion
 })
@@ -453,7 +449,8 @@ function OrionLib:MakeNotification(NotificationConfig)
 			Parent = NotificationHolder
 		})
 
-		local NotificationFrame = SetChildren(SetProps(MakeElement("RoundFrame", Color3.fromRGB(25, 25, 25), 0, 10), {
+		-- 通知の角の丸さ: 15に変更（デフォルトは10）
+		local NotificationFrame = SetChildren(SetProps(MakeElement("RoundFrame", Color3.fromRGB(25, 25, 25), 0, 15), {
 			Parent = NotificationParent, 
 			Size = UDim2.new(1, 0, 0, 0),
 			Position = UDim2.new(1, -55, 0, 0),
