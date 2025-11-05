@@ -1,6 +1,3 @@
--- Orion Library カスタマイズ版
--- 変更点: 角の丸さを 10 → 15 に変更、通知の幅を 300 → 350 に変更
-
 local UserInputService = game:GetService("UserInputService")
 local TweenService = game:GetService("TweenService")
 local RunService = game:GetService("RunService")
@@ -60,7 +57,9 @@ local function GetIcon(IconName)
 end
 
 local useStudio = RunService:IsStudio() or false
+
 local Orion = Instance.new("ScreenGui")
+
 local FocusDrag = nil
 
 Orion.Name = "OrionBliz"
@@ -68,9 +67,13 @@ Orion.Name = "OrionBliz"
 getgenv().gethui = function() return game.CoreGui end
 
 local ProtectGui = protectgui or (syn and syn.protect_gui) or function() end
+
 local GUIParent = gethui and gethui() or (game.CoreGui or game.Players.LocalPlayer:WaitForChild("PlayerGui"))
 
 Orion.Parent = GUIParent
+
+local ProtectGui = protectgui or (syn and syn.protect_gui) or function() end
+
 ProtectGui(Orion)
 
 if gethui then
@@ -269,12 +272,14 @@ local mouselock = false
 local function UnlockMouse(Value)
 	if Value then
 		mouselock = true
+
 		task.spawn(function() 
 			while mouselock do
 				UserInputService.MouseIconEnabled = Value
 				freeMouse.Visible = Value
 				task.wait()
 			end
+
 			UserInputService.MouseIconEnabled = false
 			freeMouse.Visible = false
 		end)
@@ -291,7 +296,7 @@ local function CheckKey(Table, Key)
 	end
 end
 
--- 🎨 変更: 角の丸さを 10 → 15 に
+-- 角の丸さ: 15に変更（デフォルトは10）
 CreateElement("Corner", function(Scale, Offset)
 	local Corner = Create("UICorner", {
 		CornerRadius = UDim.new(Scale or 0, Offset or 15)
@@ -386,9 +391,11 @@ CreateElement("Image", function(ImageID)
 		Image = ImageID,
 		BackgroundTransparency = 1
 	})
+
 	if GetIcon(ImageID) ~= nil then
 		ImageNew.Image = GetIcon(ImageID)
 	end	
+
 	return ImageNew
 end)
 
@@ -414,7 +421,7 @@ CreateElement("Label", function(Text, TextSize, Transparency)
 	return Label
 end)
 
--- 🎨 変更: 通知の幅を 300 → 350 に
+-- 通知の幅: 350に変更（デフォルトは300）
 local NotificationHolder = SetProps(SetChildren(MakeElement("TFrame"), {
 	SetProps(MakeElement("List"), {
 		HorizontalAlignment = Enum.HorizontalAlignment.Center,
@@ -442,7 +449,7 @@ function OrionLib:MakeNotification(NotificationConfig)
 			Parent = NotificationHolder
 		})
 
-		-- 🎨 変更: 通知の角の丸さを 10 → 15 に
+		-- 通知の角の丸さ: 15に変更（デフォルトは10）
 		local NotificationFrame = SetChildren(SetProps(MakeElement("RoundFrame", Color3.fromRGB(25, 25, 25), 0, 15), {
 			Parent = NotificationParent, 
 			Size = UDim2.new(1, 0, 0, 0),
@@ -475,6 +482,7 @@ function OrionLib:MakeNotification(NotificationConfig)
 		})
 
 		TweenService:Create(NotificationFrame, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {Position = UDim2.new(0, 0, 0, 0)}):Play()
+
 		wait(NotificationConfig.Time - 0.88)
 		TweenService:Create(NotificationFrame.Icon, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {ImageTransparency = 1}):Play()
 		TweenService:Create(NotificationFrame, TweenInfo.new(0.8, Enum.EasingStyle.Quint), {BackgroundTransparency = 0.6}):Play()
@@ -483,6 +491,7 @@ function OrionLib:MakeNotification(NotificationConfig)
 		TweenService:Create(NotificationFrame.Title, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {TextTransparency = 0.4}):Play()
 		TweenService:Create(NotificationFrame.Content, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {TextTransparency = 0.5}):Play()
 		wait(0.05)
+
 		NotificationFrame:TweenPosition(UDim2.new(1, 20, 0, 0),'In','Quint',0.8,true)
 		wait(1.35)
 		NotificationFrame:Destroy()
@@ -503,7 +512,6 @@ function OrionLib:Init()
 		end)		
 	end	
 end
-
 
 function OrionLib:MakeWindow(WindowConfig)
 	local FirstTab = true
@@ -536,7 +544,7 @@ function OrionLib:MakeWindow(WindowConfig)
 	end
 
 	if WindowConfig.FreeMouse then
-		UnlockMouse(false)
+		UnlockMouse()
 	end
 
 	local MobileOpenButton = SetChildren(SetProps(MakeElement("Button"), 
