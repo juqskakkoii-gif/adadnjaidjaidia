@@ -544,7 +544,7 @@ function OrionLib:MakeWindow(WindowConfig)
 	end
 
 	if WindowConfig.FreeMouse then
-		UnlockMouse(true)
+		UnlockMouse(false)
 	end
 
 	local MobileOpenButton = SetChildren(SetProps(MakeElement("Button"), 
